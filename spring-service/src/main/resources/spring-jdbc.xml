@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.sky.locale" />
+
+    <!-- 不需要依赖的id，可以不用指定-->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:test.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- mysql dbcp数据源-->
+    <bean id="baseDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="url" value="${jdbc.url}"/>
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxActive" value="30" />
+        <property name="initialSize" value="3" />
+        <property name="timeBetweenEvictionRunsMillis" value="290000" />
+        <property name="minEvictableIdleTimeMillis" value="290000" />
+        <property name="numTestsPerEvictionRun" value="20" />
+    </bean>
+
+    <!-- mybatis config -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="baseDataSource" />
+        <property name="typeAliasesPackage" value="com.sky.locale.dao.domain" />
+        <property name="mapperLocations" value="classpath*:sqlmap/**/*.xml" />
+    </bean>
+
+    <!-- 配置mapper扫描器 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描包路径，如果需要扫描多个包，用英文 逗号隔开 -->
+        <property name="basePackage" value="com.sky.locale.dao.mapper" />
+        <!-- 关联 sqlsession -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+</beans>

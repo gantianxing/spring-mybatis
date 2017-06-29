@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry
+            location="D:\localRepository\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar" />
+    <context id="my" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!--去除自动生成的注释-->
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 配置数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.148.95:3306/ejshop?useUnicode=true&amp;characterEncoding=UTF8"
+                        userId="root" password="123456">
+        </jdbcConnection>
+
+        <!-- 指定domain bean 放置路径 -->
+        <javaModelGenerator targetPackage="com.sky.locale.dao.domain"
+                            targetProject="D:/work/boke/spring-mybatis/spring-dao/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 指定mapper xml 放置路径 -->
+        <sqlMapGenerator targetPackage="test"
+                         targetProject="D:/work/boke/spring-mybatis/spring-dao/src/main/resources/sqlmap">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 指定mapper 接口 放置路径 -->
+        <javaClientGenerator targetPackage="com.sky.locale.dao.mapper"
+                             targetProject="D:/work/boke/spring-mybatis/spring-dao/src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 配置domain bean 与数据库表映射 -->
+        <table tableName="ejshop_test" domainObjectName="Test"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnOverride column="id" javaType="int" property="id"/>-->
+        </table>
+
+    </context>
+</generatorConfiguration>
